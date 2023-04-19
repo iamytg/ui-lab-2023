@@ -4,15 +4,23 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  MenuItem,
   Stack,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { FormItem, FormVContext } from "./FormValidations";
+import FormCheckbox from "./FormCheckbox";
+import FormItemRadioGroup from "./FormItemRadioGroup";
+import FormItemTextField from "./FormItemTextField";
+import {
+  FormVContext,
+  getDefaultStates,
+  selectOptions,
+} from "./FormValidations";
 
 const Html5 = () => {
-  const methods = useForm({ mode: "all" });
+  const methods = useForm({ mode: "all", defaultValues: getDefaultStates() });
 
   const cardRef = useRef();
   const [contextValue, setContextValue] = useState({
@@ -43,12 +51,81 @@ const Html5 = () => {
           <CardHeader title="HTML5 Native" />
           <CardContent>
             <Stack spacing={3}>
-              <FormItem label="Text Input" name="text" />
-              <FormItem label="Email Input" name="email" type="email" />
-              <FormItem label="Password" name="password" type="password" />
+              <FormItemTextField label="Text Input" name="text" />
+              <FormItemTextField
+                label="Email Input"
+                name="email"
+                type="email"
+              />
+              <FormItemTextField label="Password" name="pwd" type="password" />
+              <FormItemTextField
+                label="Date Input"
+                name="date"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+              <FormItemTextField
+                label="Disabled Input"
+                name="disabled-input"
+                disabled
+              />
+              <FormItemTextField
+                label="Textarea"
+                name="textarea"
+                multiline
+                minRows="4"
+                registerOptions={{ required: undefined }}
+              />
+
+              <FormItemTextField label="Select" name="select" select>
+                {selectOptions.map(({ label, value }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </FormItemTextField>
+              <FormItemTextField
+                label="Select Small"
+                name="selectSmall"
+                select
+                size="small"
+                registerOptions={{ required: undefined }}
+              >
+                {selectOptions.map(({ label, value }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </FormItemTextField>
+              <FormItemTextField
+                label="Disabled Select"
+                name="disabled-select"
+                select
+                disabled
+              >
+                {selectOptions.map(({ label, value }) => (
+                  <MenuItem key={value} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </FormItemTextField>
+
+              <FormItemRadioGroup label="Radios" name="radio" />
+              <FormItemRadioGroup
+                label="Inline Radios"
+                name="inlineRadio"
+                row
+              />
+
+              <FormCheckbox label="Checkboxes" namePrefix="checkbox" />
+              <FormCheckbox
+                label="Inline Checkboxes"
+                namePrefix="inlineCheckbox"
+                row
+              />
             </Stack>
           </CardContent>
-          <CardActions>
+          <CardActions sx={{ mt: 5 }}>
             <Button variant="contained" type="submit" size="large">
               Submit
             </Button>
